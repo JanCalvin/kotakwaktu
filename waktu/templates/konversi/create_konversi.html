@@ -1,0 +1,111 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">Create Data Konversi</h1>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page"><a class="text-muted" href="{% url 'read_konversi' %}">Data Konversi</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'create_konversi' %}">Create Konversi</a></li>
+        </ol>
+    </nav>
+</div>
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <form class="forms-sample" method="post">
+            {% csrf_token %}
+            <div class="form-group row">
+                <label for="kode_artikel" class="col-sm-3 col-form-label">Kode Artikel</label>
+                <div class="col-sm-9">
+                  <select  class="form-control" name="kode_artikel" id="kode_artikel">
+                      {% for i in allartikel %}
+                      <option value="{{i.id_artikel}}">{{i}}</option>
+                      {% endfor %}
+                  </select>
+                </div>
+              </div>
+          <div class="form-group row">
+            <label for="versi" class="col-sm-3 col-form-label">Versi</label>
+            <div class="col-sm-9">
+              <input type="date" class="form-control" name="versi" id="versi" placeholder="versi" required>
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col-auto">
+                <button type="button" class="btn btn-inverse-success" onclick="tambahkonversi()">Tambah</button>
+            </div>
+          </div>
+          <div  id="tambah_detail">
+            <div class="detail-row mb-4">
+                <h3 class="card-title">Detail Konversi 1</h3>
+                <div class="form-group row">
+                  <label for="nama_bahanbaku" class="col-sm-3 col-form-label">Nama Bahan Baku</label>
+                  <div class="col-sm-9">
+                    <select  class="form-control" name="nama_bahanbaku" id="nama_bahanbaku">
+                        {% for i in allbahanbaku %}
+                        <option value="{{i.id_bahanbaku}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                    <label for="jumlah" class="col-sm-3 col-form-label">Kuantitas</label>
+                    <div class="col-sm-9">
+                      <input type="number" class="form-control" name="kuantitas" id="kuantitas" step="0.01" min="0" placeholder="kuantitas" required>
+                    </div>
+                </div>
+                <button class="btn btn-inverse-danger" type="button" onclick="deleterow(this)">Delete</button>
+            </div>
+          </div>
+         
+          <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
+
+        </form>
+        </div>
+    </div>
+</div>
+{% block javascripts %}
+<script>
+    function tambahkonversi() {
+        const rows = document.querySelectorAll('#tambah_detail .detail-row');
+        const angka = rows.length + 1;
+        const baris = document.createElement('div');
+        baris.className = 'detail-row mb-4';
+        baris.innerHTML = `
+                <h3 class="card-title">Detail Konversi ${angka}</h3>
+                <div class="form-group row">
+                  <label for="nama_bahanbaku" class="col-sm-3 col-form-label">Nama Bahan Baku</label>
+                  <div class="col-sm-9">
+                    <select  class="form-control" name="nama_bahanbaku" id="nama_bahanbaku">
+                        {% for i in allbahanbaku %}
+                        <option value="{{i.id_bahanbaku}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                    <label for="jumlah" class="col-sm-3 col-form-label">Kuantitas</label>
+                    <div class="col-sm-9">
+                      <input type="number" class="form-control" name="kuantitas" id="kuantitas" step="0.01" min="0" placeholder="kuantitas">
+                    </div>
+                </div>
+                <button class="btn btn-inverse-danger" type="button" onclick="deleterow(this)">Delete</button>`;
+                document.getElementById('tambah_detail').appendChild(baris);
+        updateRowNumbers();
+            }
+            function deleterow(button) {
+        button.closest('.detail-row').remove();
+        updateRowNumbers();
+    }
+
+    function updateRowNumbers() {
+        const rows = document.querySelectorAll('#tambah_detail .detail-row');
+        rows.forEach((row, index) => {
+            const title = row.querySelector('h3');
+            title.textContent = `Detail Konversi ${index + 1}`;
+        });
+    }
+</script>
+{% endblock javascripts %}
+{% endblock  %}

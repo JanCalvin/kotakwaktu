@@ -1,0 +1,91 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">Data Konversi</h1>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item "><a href="{% url 'read_konversi' %}">Data Konversi</a></li>
+          <li class="breadcrumb-item active " aria-current="page" ><a class="text-muted" href="{% url 'create_konversi' %}">Create Konversi</a></li>
+        </ol>
+      </nav>
+</div>
+
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataartikel">
+                        <thead class="table-info">
+                            <tr>
+                                <th>No</th>
+                                <th>Id Konversi</th>
+                                <th>Kode Artikel</th>
+                                <th>Versi</th>
+                                <th>Bahan Penyusun</th>
+                                <th>Jumlah</th>
+                                {% if is_owner or is_produksi %}
+                                <th>Action 1</th>
+                                <th>Action 2</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in konversiobj %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{item.0.id_konversi}}</td>
+                                <td>{{item.0.id_artikel}}</td>
+                                <td>{{item.0.versi}}</td>
+                                <td>
+                                    {% for i in item.1 %}
+                                    <ul>
+                                        <li>{{i.id_bahanbaku}}</li>
+                                    </ul>
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    {% for i in item.1 %}
+                                    <ul>
+                                        <li>{{i.kuantitas}}</li>
+                                    </ul>
+                                    {% endfor %}
+                                </td>
+                                {% if is_owner or is_produksi %}
+                                <td>
+                                    <ul>
+                                        <a href="{% url 'update_konv' item.0.id_konversi %}"><button class="btn-inverse-warning btn-icon-text btn-sm mr-2">
+                                            <i class="mdi mdi-reload btn-icon-prepend align-middle"></i>Update Konversi</button></a>
+                                        {% if is_owner %}
+                                        <a href="{% url 'delete_konv' item.0.id_konversi %}"><button class="btn-inverse-danger btn-icon-text btn-sm">
+                                            <i class="mdi mdi-close btn-icon-prepend align-middle"></i>Delete Konversi</button></a>
+                                        {% endif %}
+                                    </ul>
+                                </td>
+                                {% endif %}
+                                {% if is_owner or is_produksi %}
+                                <td>
+                                    {% for i in item.1 %}
+                                    <ul>
+                                        <a href="{% url 'update_konversi' i.id_detailkonversi %}"><button class="btn-inverse-warning btn-icon-text btn-sm mr-2">
+                                            <i class="mdi mdi-reload btn-icon-prepend align-middle"></i>Update Detail Konversi</button></a>
+                                        {% if is_owner %}
+                                        <a href="{% url 'delete_konversi' i.id_detailkonversi %}"><button class="btn-inverse-danger btn-icon-text btn-sm">
+                                            <i class="mdi mdi-close btn-icon-prepend align-middle"></i>Delete Detail Konversi</button></a>
+                                        {% endif %}
+                                    </ul>
+                                    {% endfor %}
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock  %}

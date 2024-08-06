@@ -1,0 +1,61 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">Update Data Transaksi Gudang</h1>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page"><a class="text-muted" href="{% url 'read_transaksigudang' %}">Data Transaksi Gudang</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'update_transaksigudang' gettransaksigudangobj.id_detailtransaksigudang %}">Update Transaksi Gudang</a></li>
+        </ol>
+    </nav>
+</div>
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <form class="forms-sample" method="post">
+            {% csrf_token %}
+              <div class="form-group row">
+              <label for="nama_bahanbaku" class="col-sm-3 col-form-label">Bahan Penyusun</label>
+              <div class="col-sm-9">
+                <select  class="form-control" name="nama_bahanbaku" id="nama_bahanbaku" required>
+                    {% for i in allbahanbaku %}
+                    {% if i == gettransaksigudangobj.id_bahanbaku %}
+                    <option selected value="{{i.id_bahanbaku}}">{{i}}</option>
+                    {% else %}
+                    <option value="{{i.id_bahanbaku}}">{{i}}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+                <label for="jumlah" class="col-sm-3 col-form-label">Jumlah</label>
+                <div class="col-sm-9">
+                  <input type="number" value="{{gettransaksigudangobj.jumlah}}" class="form-control" name="jumlah" id="jumlah" placeholder="Jumlah" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="keterangan" class="col-sm-3 col-form-label">Keterangan</label>
+                <div class="col-sm-9">
+                  <input type="text" value="{{gettransaksigudangobj.keterangan}}" class="form-control" name="keterangan" id="keterangan" placeholder="Keterangan" required>
+                </div>
+            </div>
+            {% if is_owner %}
+            <div class="form-group row">
+              <label for="keteranganacc" class="col-sm-3 col-form-label">Keterangan ACC</label>
+              <div class="col-sm-9">
+                <select  class="form-control mt-2" name="keteranganacc" id="keteranganacc">
+                    <option value="True" {% if gettransaksigudangobj.keteranganacc == True %} selected {% endif %}>ACC</option>
+                    <option value="False" {% if gettransaksigudangobj.keteranganacc == False %} selected {% endif %}>Belum ACC</option>
+                </select>
+              </div>
+            </div>
+            {% endif %}
+          <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
+
+        </form>
+        </div>
+    </div>
+</div>
+{% endblock  %}

@@ -1,0 +1,66 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">Data SPK</h1>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item "><a href="{% url 'read_spk' %}">Data SPK</a></li>
+          <li class="breadcrumb-item active " aria-current="page" ><a class="text-muted" href="{% url 'create_spk' %}">Create SPK</a></li>
+        </ol>
+      </nav>
+</div>
+
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataartikel">
+                        <thead class="table-info">
+                            <tr>
+                                <th>No</th>
+                                <th>No SPK</th>
+                                <th>Tanggal</th>
+                                <th>Kode Artikel</th>
+                                <th>Jumlah</th>
+                                <th>Status</th>
+                                {% if is_owner or is_admin %}
+                                <th>Action</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in detailspk %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{item.id_spk}}</td>
+                                <td>{{item.id_spk.tanggal}}</td>
+                                <td>{{item.id_artikel}}</td>
+                                <td>{{item.jumlah}}</td>
+                                {% if item.status == True  %}
+                                <td>Selesai</td>
+                                {% else %}
+                                <td>Belum Selesai</td>
+                                {% endif %}
+                                {% if is_owner or is_admin %}
+                                <td>
+                                    <a href="{% url 'update_spk' item.id_detailspk %}"><button class="btn-inverse-warning btn-icon-text btn-sm mr-2">
+                                        <i class="mdi mdi-reload btn-icon-prepend align-middle"></i>Update Detail SPK</button></a>
+                                    {% if is_owner %}
+                                    <a href="{% url 'delete_spk' item.id_detailspk %}"><button class="btn-inverse-danger btn-icon-text btn-sm">
+                                        <i class="mdi mdi-close btn-icon-prepend align-middle"></i>Delete Detail SPK</button></a>
+                                    {% endif %}
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock  %}

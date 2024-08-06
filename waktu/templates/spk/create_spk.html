@@ -1,0 +1,125 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">Create Data SPK</h1>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page"><a class="text-muted" href="{% url 'read_spk' %}">Data SPK</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'create_spk' %}">Create SPK</a></li>
+        </ol>
+    </nav>
+</div>
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <form class="forms-sample" method="post">
+            {% csrf_token %}
+          <div class="form-group row">
+            <label for="no_spk" class="col-sm-3 col-form-label">No SPK</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" name="no_spk" id="no_spk" placeholder="No SPK" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="tanggal" class="col-sm-3 col-form-label">Tanggal</label>
+            <div class="col-sm-9">
+              <input type="date" class="form-control" name="tanggal" id="tanggal" placeholder="tanggal" required>
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col-auto">
+                <button type="button" class="btn btn-inverse-success" onclick="tambahspk()">Tambah</button>
+            </div>
+          </div>
+          <div  id="tambah_detail">
+            <div class="detail-row mb-4">
+                <h3 class="card-title">Detail SPK 1</h3>
+                <div class="form-group row">
+                  <label for="kode_artikel" class="col-sm-3 col-form-label">Kode Artikel</label>
+                  <div class="col-sm-9">
+                    <select  class="form-control" name="kode_artikel" id="kode_artikel">
+                        {% for i in allartikel %}
+                        <option value="{{i.id_artikel}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                    <label for="jumlah" class="col-sm-3 col-form-label">Jumlah</label>
+                    <div class="col-sm-9">
+                      <input type="number" class="form-control" name="jumlah" id="jumlah" placeholder="jumlah" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                  <label for="status" class="col-sm-3 col-form-label">Status</label>
+                  <div class="col-sm-9">
+                    <select  class="form-control mt-2" name="status" id="status">
+                      <option value="False">Belum Selesai</option>
+                        <option value="True">Selesai</option>
+                    </select>
+                  </div>
+                </div>
+                <button class="btn btn-inverse-danger" type="button" onclick="deleterow(this)">Delete</button>
+            </div>
+          </div>
+          
+          <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
+
+        </form>
+        </div>
+    </div>
+</div>
+{% block javascripts %}
+<script>
+    function tambahspk() {
+        const rows = document.querySelectorAll('#tambah_detail .detail-row');
+        const angka = rows.length + 1;
+        const baris = document.createElement('div');
+        baris.className = 'detail-row mb-4';
+        baris.innerHTML = `
+          <h3 class="card-title">Detail SPK ${angka}</h3>
+                <div class="form-group row">
+                  <label for="kode_artikel" class="col-sm-3 col-form-label">Kode Artikel</label>
+                  <div class="col-sm-9">
+                    <select  class="form-control" name="kode_artikel" id="kode_artikel">
+                        {% for i in allartikel %}
+                        <option value="{{i.id_artikel}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                    <label for="jumlah" class="col-sm-3 col-form-label">Jumlah</label>
+                    <div class="col-sm-9">
+                      <input type="number" class="form-control" name="jumlah" id="jumlah" placeholder="jumlah">
+                    </div>
+                </div>
+                <div class="form-group row">
+            <label for="status" class="col-sm-3 col-form-label">Status</label>
+            <div class="col-sm-9">
+              <select  class="form-control mt-2" name="status" id="status">
+                <option value="False">Belum Selesai</option>
+                  <option value="True">Selesai</option>
+              </select>
+            </div>
+          </div>
+                <button class="btn btn-inverse-danger" type="button" onclick="deleterow(this)">Delete</button>`;
+                document.getElementById('tambah_detail').appendChild(baris);
+        updateRowNumbers();
+            }
+            function deleterow(button) {
+        button.closest('.detail-row').remove();
+        updateRowNumbers();
+    }
+
+    function updateRowNumbers() {
+        const rows = document.querySelectorAll('#tambah_detail .detail-row');
+        rows.forEach((row, index) => {
+            const title = row.querySelector('h3');
+            title.textContent = `Detail SPK ${index + 1}`;
+        });
+    }
+</script>
+{% endblock javascripts %}
+{% endblock  %}

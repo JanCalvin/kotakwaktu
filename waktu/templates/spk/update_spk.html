@@ -1,0 +1,65 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">Update Data SPK</h1>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page"><a class="text-muted" href="{% url 'read_spk' %}">Data SPK</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'update_spk' detailspk.id_detailspk %}">Update SPK</a></li>
+        </ol>
+    </nav>
+</div>
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <form class="forms-sample" method="post">
+            {% csrf_token %}
+            <div class="form-group row">
+                <label for="no_spk" class="col-sm-3 col-form-label">No SPK</label>
+                <div class="col-sm-9">
+                  <input type="text" value="{{detailspk.id_spk}}" class="form-control" name="no_spk" id="no_spk" placeholder="No SPK" required>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="tanggal" class="col-sm-3 col-form-label">Tanggal</label>
+                <div class="col-sm-9">
+                  <input type="date" value="{{tanggal}}" class="form-control" name="tanggal" id="tanggal" placeholder="tanggal" required>
+                </div>
+              </div>
+              <div class="form-group row">
+              <label for="kode_artikel" class="col-sm-3 col-form-label">Kode Artikel</label>
+              <div class="col-sm-9">
+                <select  class="form-control" name="kode_artikel" id="kode_artikel">
+                    {% for i in allartikel %}
+                    {% if i == detailspk.id_artikel %}
+                    <option selected value="{{i.id_artikel}}">{{i}}</option>
+                    {% else %}
+                    <option value="{{i.id_artikel}}">{{i}}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+                <label for="jumlah" class="col-sm-3 col-form-label">Jumlah</label>
+                <div class="col-sm-9">
+                  <input type="number" value="{{detailspk.jumlah}}" class="form-control" name="jumlah" id="jumlah" placeholder="jumlah" required>
+                </div>
+            </div>
+            <div class="form-group row">
+              <label for="status" class="col-sm-3 col-form-label">Status</label>
+              <div class="col-sm-9">
+                <select  class="form-control mt-2" name="status" id="status">
+                    <option value="True" {% if detailspk.status == True %} selected {% endif %}>Selesai</option>
+                    <option value="False" {% if detailspk.status == False %} selected {% endif %}>Belum Selesai</option>
+                </select>
+              </div>
+            </div>
+          <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
+
+        </form>
+        </div>
+    </div>
+</div>
+{% endblock  %}

@@ -1,0 +1,29 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">Update Data Transaksi Gudang</h1>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page"><a class="text-muted" href="{% url 'read_transaksigudang' %}">Data Transaksi Gudang</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'update_transaksi' gettransaksiobj.id_transaksigudang %}">Update Transaksi Gudang</a></li>
+        </ol>
+    </nav>
+</div>
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <form class="forms-sample" method="post">
+            {% csrf_token %} 
+            <div class="form-group row">
+                <label for="tanggal" class="col-sm-3 col-form-label">Tanggal</label>
+                <div class="col-sm-9">
+                  <input type="date" value="{{tanggal}}" class="form-control" name="tanggal" id="tanggal" placeholder="Tanggal" required>
+                </div>
+            </div>
+          <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
+        </form>
+        </div>
+    </div>
+</div>
+{% endblock  %}

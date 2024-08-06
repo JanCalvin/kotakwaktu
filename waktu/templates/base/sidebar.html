@@ -1,0 +1,231 @@
+{% load static %}
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+      <li class="nav-item nav-profile">
+        <a href="#" class="nav-link">
+          <div class="nav-profile-image">
+            <img src="{% static 'assets/images/faces/face1.jpg' %}" alt="profile">
+            <span class="login-status online"></span>
+            <!--change to offline or busy as needed-->
+          </div>
+          <div class="nav-profile-text d-flex flex-column">
+            <span class="font-weight-bold mb-2">{{user.username}}</span>
+            {% if is_owner or is_admin %}
+            <span class="text-secondary text-small">Top Manager</span>
+            {% elif is_gudang %}
+            <span class="text-secondary text-small">Warehouse Staff</span>
+            {% else %}
+            <span class="text-secondary text-small">Production Staff</span>
+            {% endif %}
+          </div>
+          <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        {% if is_owner %}
+        <a class="nav-link" href="{% url 'base4' %}">
+          <span class="menu-title">Dashboard</span>
+          <i class="mdi mdi-home menu-icon"></i>
+        </a>
+        {% elif is_admin %}
+        <a class="nav-link" href="{% url 'base3' %}">
+          <span class="menu-title">Dashboard</span>
+          <i class="mdi mdi-home menu-icon"></i>
+        </a>
+        {% elif is_gudang %}
+        <a class="nav-link" href="{% url 'base' %}">
+          <span class="menu-title">Dashboard</span>
+          <i class="mdi mdi-home menu-icon"></i>
+        </a>
+        {% else %}
+        <a class="nav-link" href="{% url 'base2' %}">
+          <span class="menu-title">Dashboard</span>
+          <i class="mdi mdi-home menu-icon"></i>
+        </a>
+        {% endif %}
+      </li>
+
+      {% if is_owner or is_admin %}
+      <li class="nav-item nav-category">
+        <span class="nav-link text-muted">Data Master</span>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+          <span class="menu-title">Artikel</span>
+          <i class="menu-arrow"></i>
+          <i class="mdi mdi-watch menu-icon"></i>
+        </a>
+        <div class="collapse" id="ui-basic">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> 
+              <a class="nav-link" href="{% url 'read_artikel' %}">
+                Data Artikel
+              </a>
+            
+            </li>
+            <li class="nav-item">
+               <a class="nav-link" href="{% url 'create_artikel' %}">
+              Create Artikel 
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+      {% endif %}
+      {% if is_owner or is_admin %}
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic2" aria-expanded="false" aria-controls="ui-basic2">
+          <span class="menu-title">Bahan Baku</span>
+          <i class="menu-arrow"></i>
+          <i class="mdi mdi-tree menu-icon"></i>
+        </a>
+        <div class="collapse" id="ui-basic2">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> 
+              <a class="nav-link" href="{% url 'read_bahanbaku' %}">
+                Data Bahan Baku
+              </a>
+            
+            </li>
+            <li class="nav-item">
+               <a class="nav-link" href="{% url 'create_bahanbaku' %}">
+              Create Bahan Baku
+              
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+      {% endif %}
+      {% if is_owner or is_admin or is_produksi %} 
+      <li class="nav-item nav-category">
+        <span class="nav-link text-muted">Data Detail</span>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic3" aria-expanded="false" aria-controls="ui-basic3">
+          <span class="menu-title">SPK</span>
+          <i class="menu-arrow"></i>
+          <i class="mdi mdi-file-document menu-icon"></i>
+        </a>
+        <div class="collapse" id="ui-basic3">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> 
+              <a class="nav-link" href="{% url 'read_spk' %}">
+                Data SPK
+              </a>
+            {% if is_owner or is_admin %}
+            </li>
+            <li class="nav-item">
+               <a class="nav-link" href="{% url 'create_spk' %}">
+              Create SPK
+              
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </li>
+      {% endif %}
+      
+      {% if is_owner or is_admin or is_gudang or is_produksi %}
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic4" aria-expanded="false" aria-controls="ui-basic4">
+          <span class="menu-title">Konversi</span>
+          <i class="menu-arrow"></i>
+          <i class="mdi mdi-flask
+          menu-icon"></i>
+        </a>
+        <div class="collapse" id="ui-basic4">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> 
+              <a class="nav-link" href="{% url 'read_konversi' %}">
+                Data Konversi
+              </a>
+            
+            </li>
+            {% if is_owner or is_produksi %}
+            <li class="nav-item">
+               <a class="nav-link" href="{% url 'create_konversi' %}">
+              Create Konversi
+              
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </li>
+      {% endif %}
+      {% if is_owner or is_gudang or is_produksi %}
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic5" aria-expanded="false" aria-controls="ui-basic5">
+          <span class="menu-title">Transaksi Gudang</span>
+          <i class="menu-arrow"></i>
+          <i class="mdi mdi-dropbox
+          menu-icon"></i>
+        </a>
+        <div class="collapse" id="ui-basic5">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> 
+              <a class="nav-link" href="{% url 'read_transaksigudang' %}">
+                Data Transaksi Gudang
+              </a>
+            
+            </li>
+            {% if is_owner or  is_produksi %}
+            <li class="nav-item">
+               <a class="nav-link" href="{% url 'create_transaksigudang' %}">
+              Create Transaksi Gudang
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </li>
+      {% endif %}
+      
+      {% if is_owner or is_gudang or is_admin %}
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic6" aria-expanded="false" aria-controls="ui-basic6">
+          <span class="menu-title">SPP</span>
+          <i class="menu-arrow"></i>
+          <i class="mdi mdi-dropbox
+          menu-icon"></i>
+        </a>
+        <div class="collapse" id="ui-basic6">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> 
+              <a class="nav-link" href="{% url 'read_detailsjp' %}">
+                Data SPP
+              </a>
+            
+            </li>
+            {% if is_owner or is_gudang %}
+            <li class="nav-item">
+               <a class="nav-link" href="{% url 'create_detailsjp' %}">
+              Create SPP
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </li>
+      {% endif %}
+
+      {% if is_owner or is_gudang or is_admin or is_produksi %}
+      {% if is_owner or is_gudang or is_admin  %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'rekap_gudang' %}">
+          <span class="menu-title">Rekap Gudang</span>
+          <i class="mdi mdi-file-document menu-icon"></i>
+        </a>
+      </li>
+      {% endif %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'rekap_konv' %}">
+          <span class="menu-title">Rekap Konversi</span>
+          <i class="mdi mdi-flask menu-icon"></i>
+        </a>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>

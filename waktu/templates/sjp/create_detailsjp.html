@@ -1,0 +1,132 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">Create Data SPP</h1>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page"><a class="text-muted" href="{% url 'read_detailsjp' %}">Data SPP</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'create_detailsjp' %}">Create SPP</a></li>
+        </ol>
+    </nav>
+</div>
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <form class="forms-sample" method="post">
+            {% csrf_token %}
+            <div class="form-group row">
+                <label for="tanggal" class="col-sm-3 col-form-label">Tanggal</label>
+                <div class="col-sm-9">
+                    <input type="date" class="form-control" name="tanggal" id="tanggal" placeholder="Tanggal" required>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-auto">
+                    <button type="button" class="btn btn-inverse-success" onclick="tambahsjp()">Tambah</button>
+                </div>
+            </div>
+           
+          <div  id="tambah_detail">
+            <div class="detail-row mb-4">
+                <h3 class="card-title">Detail SPP 1</h3>
+                <div class="form-group row">
+                  <label for="nama_bahanbaku" class="col-sm-3 col-form-label">Nama Bahan Baku</label>
+                  <div class="col-sm-9">
+                    <select  class="form-control" name="nama_bahanbaku" id="nama_bahanbaku" required>
+                        {% for i in allbahanbaku %}
+                        <option value="{{i.id_bahanbaku}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                    <label for="jumlah" class="col-sm-3 col-form-label">Jumlah</label>
+                    <div class="col-sm-9">
+                      <input type="number" class="form-control" name="jumlah" id="jumlah"  placeholder="Jumlah" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="keterangan" class="col-sm-3 col-form-label">Keterangan</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" name="keterangan" id="keterangan"  placeholder="Keterangan" required>
+                    </div>
+                </div>
+                <button class="btn btn-inverse-danger" type="button" onclick="deleterow(this)">Delete</button>
+            </div>
+          </div>
+         
+          <div class="form-group row">
+            <label for="keteranganacc" class="col-sm-3 col-form-label">Keterangan ACC</label>
+            <div class="col-sm-9">
+              <select  class="form-control mt-2" name="keteranganacc" id="keteranganacc">
+                  <option value="True">ACC</option>
+                  <option value="False">Belum ACC</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
+
+        </form>
+        </div>
+    </div>
+</div>
+{% block javascripts %}
+<script>
+    function tambahsjp() {
+        const rows = document.querySelectorAll('#tambah_detail .detail-row');
+        const angka = rows.length + 1;
+        const baris = document.createElement('div');
+        baris.className = 'detail-row mb-4';
+        baris.innerHTML = `
+                 <h3 class="card-title">Detail SPP ${angka}</h3>
+                <div class="form-group row">
+                  <label for="nama_bahanbaku" class="col-sm-3 col-form-label">Nama Bahan Baku</label>
+                  <div class="col-sm-9">
+                    <select  class="form-control" name="nama_bahanbaku" id="nama_bahanbaku">
+                        {% for i in allbahanbaku %}
+                        <option value="{{i.id_bahanbaku}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                    <label for="jumlah" class="col-sm-3 col-form-label">Jumlah</label>
+                    <div class="col-sm-9">
+                      <input type="number" class="form-control" name="jumlah" id="jumlah"  placeholder="Jumlah">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="keterangan" class="col-sm-3 col-form-label">Keterangan</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" name="keterangan" id="keterangan"  placeholder="Keterangan">
+                    </div>
+                </div>
+                <div class="form-group row">
+            <label for="keteranganacc" class="col-sm-3 col-form-label">Keterangan ACC</label>
+            <div class="col-sm-9">
+              <select  class="form-control mt-2" name="keteranganacc" id="keteranganacc">
+                  <option value="True">ACC</option>
+                  <option value="False">Belum ACC</option>
+              </select>
+            </div>
+          </div>
+                <button class="btn btn-inverse-danger" type="button" onclick="deleterow(this)">Delete</button>`;
+                document.getElementById('tambah_detail').appendChild(baris);
+        updateRowNumbers();
+            }
+            function deleterow(button) {
+        button.closest('.detail-row').remove();
+        updateRowNumbers();
+    }
+
+    function updateRowNumbers() {
+        const rows = document.querySelectorAll('#tambah_detail .detail-row');
+        rows.forEach((row, index) => {
+            const title = row.querySelector('h3');
+            title.textContent = `Detail SPP ${index + 1}`;
+        });
+    }
+</script>
+{% endblock javascripts %}
+{% endblock  %}
